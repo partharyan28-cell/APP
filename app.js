@@ -554,3 +554,4 @@ if (!configured) {
     setScreen('authScreen');
   }).catch(reportError);
 }
+});
