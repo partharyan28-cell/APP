@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f2">
+  <title>Goodwork — People & rewards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--ink:#17221d;--muted:#777f79;--line:#e7eae5;--paper:#fff;--canvas:#f4f5f2;--green:#b9fa76;--forest:#183c2c;--mint:#e9f5df;--orange:#f18c65;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .app{min-height:100vh;display:grid;grid-template-columns:232px minmax(0,1fr)}
+    .sidebar{position:sticky;top:0;height:100vh;padding:29px 17px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:2}
+    .brand{display:flex;align-items:center;gap:10px;padding:1px 12px 34px;font-size:19px;font-weight:800;letter-spacing:-.7px}
+    .brand-mark{width:30px;height:30px;border-radius:10px;background:var(--forest);color:var(--green);display:grid;place-items:center;font-size:17px}
+    .nav-label{padding:0 12px;margin:0 0 10px;color:#969d97;font:10px var(--mono);letter-spacing:1px;text-transform:uppercase}
+    .nav-link{height:42px;display:flex;align-items:center;gap:11px;padding:0 12px;border-radius:8px;color:#69736c;text-decoration:none;margin:2px 0;font-weight:600}
+    .nav-link.active{background:#eef5e9;color:#24442c}
+    .nav-icon{width:18px;text-align:center;font-size:16px}
+    .sidebar-bottom{margin-top:auto;padding:14px 12px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    .workspace{min-width:0}
+    .topbar{height:65px;padding:0 42px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:space-between}
+    .crumb{color:var(--muted);font-size:12px}.crumb strong{color:var(--ink);font-weight:600}
+    .top-right{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+    .avatar{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:#d9e8cc;color:#355c36;font-weight:700}
+    main{max-width:1380px;padding:36px 42px 64px;margin:0 auto}
+    .page-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:27px}
+    .eyebrow{margin:0 0 8px;color:#78817a;font:10px var(--mono);letter-spacing:1.15px;text-transform:uppercase}
+    h1{margin:0;font-size:29px;line-height:1.17;letter-spacing:-1.1px}
+    .subtitle{margin:7px 0 0;color:var(--muted);font-size:13px}
+    .button{min-height:39px;padding:0 15px;border:1px solid transparent;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:700;white-space:nowrap;transition:transform .15s,background .15s}
+    .button:hover{transform:translateY(-1px)}
+    .button-primary{background:var(--forest);color:#fff}
+    .button-primary:hover{background:#254e38}
+    .button-soft{border-color:var(--line);background:#fff;color:var(--ink)}
+    .button-soft:hover{background:#f7f8f6}
+    .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:27px}
+    .metric{padding:18px 19px 16px;border:1px solid var(--line);border-radius:8px;background:var(--paper);min-height:111px}
+    .metric-top{display:flex;align-items:center;justify-content:space-between;color:#778078;font-size:11px}
+    .metric-icon{width:25px;height:25px;border-radius:7px;display:grid;place-items:center;background:#f0f3ed;color:#4b674f;font-size:13px}
+    .metric-value{margin-top:11px;font-size:24px;font-weight:700;letter-spacing:-.8px;line-height:1.05}
+    .metric-foot{margin-top:6px;color:#929a93;font-size:10px}
+    .content-grid{display:grid;grid-template-columns:minmax(0,1fr) 282px;gap:15px;align-items:start}
+    .panel{border:1px solid var(--line);border-radius:8px;background:#fff;min-width:0}
+    .panel-header{min-height:67px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 19px;border-bottom:1px solid var(--line)}
+    .panel-title{margin:0;font-size:14px;font-weight:700;letter-spacing:-.15px}
+    .panel-hint{margin:3px 0 0;color:var(--muted);font-size:11px}
+    .count{padding:3px 8px;border-radius:20px;background:#f1f3ef;color:#687169;font:10px var(--mono)}
+    .toolbar{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid var(--line)}
+    .search{height:34px;max-width:260px;flex:1;position:relative}
+    .search span{position:absolute;left:10px;top:8px;color:#89918a}
+    .search input{width:100%;height:100%;padding:0 10px 0 31px;border:1px solid var(--line);border-radius:6px;outline:none;color:var(--ink);font-size:11px}
+    .search input:focus,.field input:focus,.field select:focus{border-color:#6f9971;box-shadow:0 0 0 3px #eef5e9}
+    .filter{height:34px;padding:0 9px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#59625b;font-size:11px}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+    th{height:37px;padding:0 12px;color:#89918a;font:9px var(--mono);letter-spacing:.45px;text-transform:uppercase;border-bottom:1px solid var(--line)}
+    th:first-child,td:first-child{padding-left:19px}
+    td{height:59px;padding:0 12px;border-bottom:1px solid #f0f1ee;font-size:11px}
+    tbody tr:last-child td{border-bottom:0}
+    .person-cell{display:flex;align-items:center;gap:10px;min-width:142px}
+    .person-avatar{width:31px;height:31px;flex:0 0 31px;border-radius:9px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#365f3e;background:#e2efdb}
+    .person-name{font-size:11px;font-weight:700;color:#243129}
+    .person-role{margin-top:2px;color:#919992;font-size:10px}
+    .money{font:11px var(--mono);font-weight:500}
+    .sub-money{margin-top:3px;color:#a0a69f;font:9px var(--sans)}
+    .points{display:inline-flex;align-items:center;gap:5px;color:#57644e;font:11px var(--mono)}
+    .point-dot{width:6px;height:6px;border-radius:50%;background:#98cc66}
+    .row-actions{display:flex;justify-content:flex-end;gap:5px}
+    .icon-button{width:27px;height:27px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#677068;display:grid;place-items:center;font-size:12px}
+    .icon-button:hover{background:#f2f5ef;color:#243c2b}
+    .pay-button{height:27px;padding:0 9px;border:0;border-radius:5px;background:#eaf4e3;color:#365b35;font-size:10px;font-weight:700}
+    .pay-button:disabled{background:#f4f5f2;color:#a3aaa2;cursor:default}
+    .empty-state{padding:38px 20px;text-align:center;color:var(--muted);font-size:12px}
+    .empty-state strong{display:block;margin-bottom:5px;color:#344139;font-size:13px}
+    .activity-panel .panel-header{min-height:67px}
+    .activity-list{padding:3px 17px 4px}
+    .activity-item{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid #f0f1ee}
+    .activity-item:last-child{border-bottom:0}
+    .activity-icon{width:29px;height:29px;flex:0 0 29px;border-radius:8px;display:grid;place-items:center;background:#eff4e9;color:#527144;font-size:12px}
+    .activity-icon.cash{background:#fff0e9;color:#b66342}
+    .activity-text{min-width:0;flex:1;font-size:10px;color:#465048;line-height:1.45}
+    .activity-text strong{font-weight:700;color:#26342a}
+    .activity-meta{display:flex;justify-content:space-between;gap:8px;margin-top:4px;color:#9aa09a;font-size:9px}
+    .activity-amount{color:#49683f;font:10px var(--mono);white-space:nowrap}
+    .activity-amount.cash{color:#bd6948}
+    .activity-empty{padding:20px 3px;color:#919992;font-size:11px}
+    .screen{min-height:100vh;display:grid;place-items:center;padding:24px}
+    .auth-card{width:min(100%,420px);padding:28px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .auth-card .brand{padding:0 0 22px}
+    .auth-card h1{font-size:23px}
+    .auth-card .subtitle{margin-bottom:20px}
+    .auth-card .field{margin-top:13px}
+    .auth-card .button{width:100%;margin-top:16px}
+    .auth-note{margin-top:14px;color:var(--muted);font-size:11px}
+    .appeals-panel{margin-top:16px}
+    .appeal-list{padding:15px 18px}
+    .appeal-card{padding:15px 0;border-bottom:1px solid #f0f1ee}
+    .appeal-card:first-child{padding-top:0}
+    .appeal-card:last-child{border-bottom:0}
+    .appeal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .appeal-title{font-size:12px;font-weight:700}
+    .appeal-meta{margin-top:3px;color:var(--muted);font-size:10px}
+    .appeal-body{margin:10px 0;color:#465048;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+    .appeal-status{padding:4px 8px;border:1px solid var(--line);border-radius:20px;background:#f8f9f7;color:#57644e;font-size:10px}
+    .appeal-comments{padding:10px 12px;border-radius:7px;background:#f7f8f6}
+    .appeal-comment{padding:7px 0;color:#465048;font-size:11px;white-space:pre-wrap;overflow-wrap:anywhere}
+    .appeal-comment strong{color:#26342a}
+    .comment-form{display:flex;gap:8px;margin-top:10px}
+    .comment-form input{min-width:0;flex:1;height:35px;padding:0 10px;border:1px solid var(--line);border-radius:6px;font-size:11px}
+    .comment-form .button{min-height:35px;padding:0 11px}
+    .appeal-create{padding:17px 18px;border-bottom:1px solid var(--line)}
+    .appeal-create .dialog-footer{margin-top:13px}
+    .person-email{margin-top:2px;color:#89918a;font-size:9px}
+    .status-select{height:29px;padding:0 7px;border:1px solid var(--line);border-radius:5px;background:#fff;font-size:10px}
+    .auth-error{margin-top:10px;color:#a33c2d;font-size:11px}
+    [hidden]{display:none!important}
+    .overlay{position:fixed;inset:0;z-index:5;background:rgba(17,29,21,.35);display:none;align-items:center;justify-content:center;padding:20px}
+    .overlay.open{display:flex}
+    .dialog{width:min(100%,420px);border-radius:10px;background:white;padding:24px;box-shadow:0 18px 60px rgba(17,29,21,.18);animation:rise .18s ease-out}
+    @keyframes rise{from{transform:translateY(7px);opacity:.65}to{transform:translateY(0);opacity:1}}
+    .dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:19px}
+    .dialog h2{margin:0;font-size:19px;letter-spacing:-.45px}
+    .dialog-description{margin:4px 0 0;color:var(--muted);font-size:11px}
+    .close-button{width:29px;height:29px;border:0;border-radius:6px;background:#f2f4f0;color:#687168;font-size:17px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .field.full{grid-column:1/-1}
+    .field label{color:#626b63;font-size:10px;font-weight:700}
+    .field input,.field select{height:37px;width:100%;padding:0 10px;border:1px solid #e3e7e1;border-radius:6px;background:#fff;outline:none;color:#28332b;font-size:12px}
+    .field-note{color:#949b94;font-size:9px}
+    .dialog-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:21px}
+    .toast{position:fixed;z-index:8;right:23px;bottom:22px;padding:11px 15px;border-radius:7px;background:var(--forest);color:white;box-shadow:0 5px 25px #17221d2c;font-size:12px;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
+    @media(max-width:1040px){.app{grid-template-columns:190px minmax(0,1fr)}.topbar{padding:0 26px}main{padding:29px 26px 50px}.content-grid{grid-template-columns:minmax(0,1fr) 245px}.summary{gap:9px}.metric{padding:15px}.metric-value{font-size:21px}}
+    @media(max-width:780px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;padding:12px 17px;border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;gap:10px}.brand{padding:0;font-size:16px}.brand-mark{width:27px;height:27px}.nav-label,.sidebar-bottom{display:none}.nav-link{width:37px;height:36px;justify-content:center;padding:0;margin-left:auto;font-size:0}.nav-link+.nav-link{margin-left:0}.nav-icon{font-size:15px}.topbar{height:49px;padding:0 19px}.top-right{font-size:0}.top-right .avatar{font-size:11px}main{padding:25px 19px 40px}.content-grid{grid-template-columns:1fr}.activity-panel{order:2}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{min-height:99px}.metric-value{font-size:21px}.page-heading{align-items:center}.page-heading h1{font-size:25px}.nav-link.sign-out{font-size:10px;width:auto;padding:0 9px}}
+    @media(max-width:480px){.page-heading{align-items:flex-start}.page-heading>.button{min-height:35px;padding:0 10px;font-size:10px}.subtitle{max-width:220px}.summary{gap:8px}.metric{padding:13px 12px;min-height:93px}.metric-top{font-size:10px}.metric-value{font-size:19px}.metric-foot{font-size:9px}.panel-header{padding:13px 14px}.toolbar{padding:10px 12px}.search{max-width:none}.filter{max-width:100px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.dialog{padding:20px}.crumb{font-size:11px}}
+  </style>
+</head>
+<body>
+  <section class="screen" id="authScreen">
+    <div class="auth-card">
+      <div class="brand"><span class="brand-mark">g.</span> goodwork</div>
+      <p class="eyebrow">Private team access</p>
+      <h1>Sign in to Goodwork</h1>
+      <p class="subtitle">Enter your email and we’ll send you a secure sign-in link.</p>
+      <form id="authForm">
+        <div class="field"><label for="authEmail">Email address</label><input id="authEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <button class="button button-primary" type="submit">Email me a sign-in link</button>
+        <p class="auth-error" id="authError" role="alert" hidden></p>
+      </form>
+      <p class="auth-note" id="authNote">Only invited team members and the workspace owner can access this dashboard.</p>
+    </div>
+  </section>
+  <section class="screen" id="setupScreen" hidden>
+    <div class="auth-card">
+      <div class="brand"><span class="brand-mark">g.</span> goodwork</div>
+      <p class="eyebrow">Setup needed</p>
+      <h1>Connect your workspace</h1>
+      <p class="subtitle">Add your Supabase project URL and public anon key in <code>app.js</code>, then reload.</p>
+    </div>
+  </section>
+  <section class="screen" id="loadingScreen" hidden>
+    <div class="auth-card"><p class="subtitle">Loading your private dashboard…</p></div>
+  </section>
+  <div class="app" id="ownerApp" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">g.</span> goodwork</div>
+      <p class="nav-label">Workspace</p>
+      <a class="nav-link active" href="#people" aria-current="page"><span class="nav-icon">◉</span>People</a>
+      <a class="nav-link" href="#activity"><span class="nav-icon">↗</span>Activity</a>
+      <a class="nav-link" href="#appeals"><span class="nav-icon">✉</span>Appeals</a>
+      <button class="nav-link sign-out" id="ownerSignOut" type="button">Sign out</button>
+      <div class="sidebar-bottom">Your team, doing good work.</div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div class="crumb">Workspace <span aria-hidden="true">/</span> <strong>People</strong></div>
+        <div class="top-right"><span id="todayLabel"></span><span class="avatar">G</span></div>
+      </header>
+      <main>
+        <div class="page-heading" id="people">
+          <div><p class="eyebrow">Your team at a glance</p><h1>People &amp; rewards</h1><p class="subtitle">Manage your crew, weekly pay, points, and cash rewards.</p></div>
+          <button class="button button-primary" id="addPerson"><span aria-hidden="true">＋</span> Add person</button>
+        </div>
+        <section class="summary" aria-label="Team summary">
+          <article class="metric"><div class="metric-top">Weekly payroll <span class="metric-icon">$</span></div><div class="metric-value" id="payrollTotal">$0</div><div class="metric-foot">total weekly salaries</div></article>
+          <article class="metric"><div class="metric-top">Paid this week <span class="metric-icon">✓</span></div><div class="metric-value" id="paidTotal">$0</div><div class="metric-foot" id="paidFoot">0 of 0 people paid</div></article>
+          <article class="metric"><div class="metric-top">Points in play <span class="metric-icon">✳</span></div><div class="metric-value" id="pointsTotal">0</div><div class="metric-foot">across your whole team</div></article>
+          <article class="metric"><div class="metric-top">Team members <span class="metric-icon">◎</span></div><div class="metric-value" id="peopleTotal">0</div><div class="metric-foot">people on your roster</div></article>
+        </section>
+        <div class="content-grid">
+          <section class="panel" aria-labelledby="rosterTitle">
+            <div class="panel-header"><div><h2 class="panel-title" id="rosterTitle">Team roster</h2><p class="panel-hint">Salaries, balances, and weekly pay</p></div><span class="count" id="rosterCount">0 people</span></div>
+            <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Find a person..." aria-label="Search people"></label><select class="filter" id="roleFilter" aria-label="Filter by role"><option value="">All roles</option></select></div>
+            <div class="table-wrap"><table><thead><tr><th>Person</th><th>Weekly salary</th><th>Points</th><th>Wallet</th><th style="text-align:right">Actions</th></tr></thead><tbody id="rosterBody"></tbody></table><div class="empty-state" id="emptyState" hidden><strong id="emptyTitle">No people yet</strong><span id="emptyText">Add your first teammate to get started.</span></div></div>
+          </section>
+          <section class="panel activity-panel" id="activity" aria-labelledby="activityTitle">
+            <div class="panel-header"><div><h2 class="panel-title" id="activityTitle">Recent activity</h2><p class="panel-hint">The latest team updates</p></div><span class="count" id="activityCount">0</span></div>
+            <div class="activity-list" id="activityList"></div>
+          </section>
+        </div>
+        <section class="panel appeals-panel" id="appeals" aria-labelledby="appealsTitle">
+          <div class="panel-header"><div><h2 class="panel-title" id="appealsTitle">Appeals &amp; comments</h2><p class="panel-hint">Review requests from invited team members</p></div><span class="count" id="appealCount">0</span></div>
+          <div class="appeal-list" id="ownerAppealList"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <section class="screen" id="inviteeApp" hidden>
+    <main style="width:min(100%,1000px);margin:auto">
+      <div class="page-heading"><div><p class="eyebrow">Your Goodwork dashboard</p><h1 id="inviteeName">Welcome</h1><p class="subtitle">Review your details, raise an appeal, or discuss an open request.</p></div><button class="button button-soft" id="inviteeSignOut" type="button">Sign out</button></div>
+      <section class="summary" aria-label="Your details">
+        <article class="metric"><div class="metric-top">Your role <span class="metric-icon">◎</span></div><div class="metric-value" id="inviteeRole">—</div><div class="metric-foot">current team role</div></article>
+        <article class="metric"><div class="metric-top">Points <span class="metric-icon">✳</span></div><div class="metric-value" id="inviteePoints">0</div><div class="metric-foot">your current balance</div></article>
+        <article class="metric"><div class="metric-top">Wallet <span class="metric-icon">$</span></div><div class="metric-value" id="inviteeMoney">$0</div><div class="metric-foot">your current balance</div></article>
+        <article class="metric"><div class="metric-top">Weekly salary <span class="metric-icon">↗</span></div><div class="metric-value" id="inviteeSalary">$0</div><div class="metric-foot">current weekly amount</div></article>
+      </section>
+      <section class="panel" aria-labelledby="newAppealTitle">
+        <div class="panel-header"><div><h2 class="panel-title" id="newAppealTitle">Appeal a record</h2><p class="panel-hint">Choose what you’re appealing and tell the workspace owner why.</p></div></div>
+        <form class="appeal-create" id="appealForm">
+          <div class="form-grid">
+            <div class="field"><label for="appealField">Record</label><select id="appealField" name="field" required><option value="points">Points</option><option value="money">Money or wallet</option><option value="role">Role</option><option value="name">Name</option></select></div>
+            <div class="field"><label for="appealValue">What should be reviewed? (optional)</label><input id="appealValue" name="requestedValue" maxlength="120" placeholder="e.g. 50 points"></div>
+            <div class="field full"><label for="appealMessage">Your appeal</label><input id="appealMessage" name="message" required maxlength="2000" placeholder="Explain what you think should be reviewed"></div>
+          </div>
+          <div class="dialog-footer"><button class="button button-primary" type="submit">Send appeal</button></div>
+        </form>
+      </section>
+      <section class="panel appeals-panel" aria-labelledby="myAppealsTitle">
+        <div class="panel-header"><div><h2 class="panel-title" id="myAppealsTitle">Your appeals</h2><p class="panel-hint">You and the workspace owner can comment on each request.</p></div><span class="count" id="myAppealCount">0</span></div>
+        <div class="appeal-list" id="inviteeAppealList"></div>
+      </section>
+    </main>
+  </section>
+  <div class="overlay" id="personOverlay" role="presentation"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="personDialogTitle"><div class="dialog-heading"><div><h2 id="personDialogTitle">Add a person</h2><p class="dialog-description">Set up a team member and their weekly pay.</p></div><button class="close-button" type="button" data-close="personOverlay" aria-label="Close">×</button></div><form id="personForm"><div class="form-grid"><div class="field"><label for="personName">Full name</label><input id="personName" name="name" required maxlength="70" placeholder="e.g. Jamie Rivera"></div><div class="field"><label for="personRole">Role</label><input id="personRole" name="role" required maxlength="50" placeholder="e.g. Designer"></div><div class="field full"><label for="personEmail">Email address</label><input id="personEmail" name="email" type="email" required maxlength="254" placeholder="teammate@example.com"><span class="field-note">This is where the private dashboard invitation will be sent.</span></div><div class="field full"><label for="personSalary">Weekly salary</label><input id="personSalary" name="salary" type="number" min="0" step="0.01" required placeholder="0.00"><span class="field-note">Salary is added to their wallet when you pay them.</span></div></div><div class="dialog-footer"><button class="button button-soft" type="button" data-close="personOverlay">Cancel</button><button class="button button-primary" type="submit" id="savePersonButton">Add person</button></div></form></section></div>
+  <div class="overlay" id="rewardOverlay" role="presentation"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="rewardDialogTitle"><div class="dialog-heading"><div><h2 id="rewardDialogTitle">Give a reward</h2><p class="dialog-description" id="rewardDescription">Choose a reward and add a note.</p></div><button class="close-button" type="button" data-close="rewardOverlay" aria-label="Close">×</button></div><form id="rewardForm"><div class="form-grid"><div class="field full"><label for="rewardType">Reward type</label><select id="rewardType" name="type"><option value="points">Points</option><option value="money">Money</option></select></div><div class="field full"><label for="rewardAmount" id="rewardAmountLabel">Points to give</label><input id="rewardAmount" name="amount" type="number" min="1" step="1" required placeholder="e.g. 10"></div><div class="field full"><label for="rewardNote">Note <span style="font-weight:400;color:#929a93">(optional)</span></label><input id="rewardNote" name="note" maxlength="90" placeholder="e.g. Great work this week"></div></div><div class="dialog-footer"><button class="button button-soft" type="button" data-close="rewardOverlay">Cancel</button><button class="button button-primary" type="submit">Give reward</button></div></form></section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
