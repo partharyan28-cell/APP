@@ -366,10 +366,10 @@ $('#authForm').addEventListener('submit', event => {
   runSafely(async () => {
     $('#authError').hidden = true;
     const email = $('#authEmail').value.trim().toLowerCase();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.origin, shouldCreateUser: false }
-    });
+    const { error } = await supabase.auth.signInWithPassword({
+  email,
+  password: '09120912',
+});
     if (error) throw error;
     $('#authNote').textContent = `A secure sign-in link was sent to ${email}. Check your inbox.`;
   });
