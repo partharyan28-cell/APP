@@ -148,10 +148,16 @@
       <div class="brand"><span class="brand-mark">g.</span> goodwork</div>
       <p class="eyebrow">Private team access</p>
       <h1>Sign in to Goodwork</h1>
-      <p class="subtitle">Enter your email and we’ll send you a secure sign-in link.</p>
+      <p class="subtitle">Enter your email and password to sign in.</p>
       <form id="authForm">
-        <div class="field"><label for="authEmail">Email address</label><input id="authEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
-        <button class="button button-primary" type="submit">Email me a sign-in link</button>
+
+<label for="authEmail">Email address</label>
+<input id="authEmail" type="email" placeholder="you@example.com" required />
+
+<label for="authPassword">Password</label>
+<input id="authPassword" type="password" placeholder="Enter your password" required />
+
+<button class="btn-primary" type="submit">Sign In</button>
         <p class="auth-error" id="authError" role="alert" hidden></p>
       </form>
       <p class="auth-note" id="authNote">Only invited team members and the workspace owner can access this dashboard.</p>

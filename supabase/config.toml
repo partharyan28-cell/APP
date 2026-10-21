@@ -1,0 +1,4 @@
+project_id = "goodwork"
+
+[functions.invite-person]
+verify_jwt = true
