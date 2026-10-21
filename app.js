@@ -371,8 +371,7 @@ $('#authForm').addEventListener('submit', event => {
   password: '09120912',
 });
     if (error) throw error;
-    $('#authNote').textContent = `A secure sign-in link was sent to ${email}. Check your inbox.`;
-  });
+    $('#authNote').textContent = 'Signing in...';
 });
 
 $('#ownerSignOut').addEventListener('click', () => runSafely(() => supabase.auth.signOut()));
